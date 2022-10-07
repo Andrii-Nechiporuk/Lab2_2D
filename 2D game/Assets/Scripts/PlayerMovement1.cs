@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,6 +12,11 @@ public class PlayerMovement1 : MonoBehaviour
 
     Vector2 movementVector;
     Rigidbody2D rbody;
+
+    //VariableForDoorLogic
+    public Rigidbody2D door;
+    private bool isOpened = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +28,7 @@ public class PlayerMovement1 : MonoBehaviour
     {
         Vector2 playerVelocity = new Vector2(movementVector.x * movementSpeed, rbody.velocity.y);
         rbody.velocity = playerVelocity;
+        
     }
 
     private void OnMove(InputValue value)
@@ -58,5 +65,20 @@ public class PlayerMovement1 : MonoBehaviour
                 isJumping = true;
             }
         }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (isOpened == false)
+        {
+            door.transform.position += new Vector3(0, -6.5f, 0);
+            isOpened = true;
+        }
+        else
+        {
+            door.transform.position += new Vector3(0, 6.5f, 0);
+            isOpened = false;
+        }
+
     }
 }
